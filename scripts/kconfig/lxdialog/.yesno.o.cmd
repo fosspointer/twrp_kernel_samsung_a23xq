@@ -1,12 +1,10 @@
-cmd_scripts/basic/fixdep := gcc -Wp,-MD,scripts/basic/.fixdep.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89         -o scripts/basic/fixdep scripts/basic/fixdep.c   
+cmd_scripts/kconfig/lxdialog/yesno.o := gcc -Wp,-MD,scripts/kconfig/lxdialog/.yesno.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89      -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=600 -c -o scripts/kconfig/lxdialog/yesno.o scripts/kconfig/lxdialog/yesno.c
 
-source_scripts/basic/fixdep := scripts/basic/fixdep.c
+source_scripts/kconfig/lxdialog/yesno.o := scripts/kconfig/lxdialog/yesno.c
 
-deps_scripts/basic/fixdep := \
-    $(wildcard include/config/his/driver.h) \
-    $(wildcard include/config/my/option.h) \
-    $(wildcard include/config/foo.h) \
+deps_scripts/kconfig/lxdialog/yesno.o := \
   /usr/include/stdc-predef.h \
+  scripts/kconfig/lxdialog/dialog.h \
   /usr/include/sys/types.h \
   /usr/include/features.h \
   /usr/include/features-time64.h \
@@ -42,7 +40,9 @@ deps_scripts/basic/fixdep := \
   /usr/include/bits/atomic_wide_counter.h \
   /usr/include/bits/struct_mutex.h \
   /usr/include/bits/struct_rwlock.h \
-  /usr/include/sys/stat.h \
+  /usr/include/fcntl.h \
+  /usr/include/bits/fcntl.h \
+  /usr/include/bits/fcntl-linux.h \
   /usr/include/bits/stat.h \
   /usr/include/bits/struct_stat.h \
   /usr/include/unistd.h \
@@ -52,16 +52,11 @@ deps_scripts/basic/fixdep := \
   /usr/include/bits/getopt_posix.h \
   /usr/include/bits/getopt_core.h \
   /usr/include/bits/unistd_ext.h \
-  /usr/include/fcntl.h \
-  /usr/include/bits/fcntl.h \
-  /usr/include/bits/fcntl-linux.h \
-  /usr/include/string.h \
-  /usr/include/bits/libc-header-start.h \
+  /usr/include/ctype.h \
   /usr/include/bits/types/locale_t.h \
   /usr/include/bits/types/__locale_t.h \
-  /usr/include/strings.h \
-  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdarg.h \
   /usr/include/stdlib.h \
+  /usr/include/bits/libc-header-start.h \
   /usr/include/bits/waitflags.h \
   /usr/include/bits/waitstatus.h \
   /usr/include/bits/floatn.h \
@@ -69,7 +64,17 @@ deps_scripts/basic/fixdep := \
   /usr/include/alloca.h \
   /usr/include/bits/stdlib-bsearch.h \
   /usr/include/bits/stdlib-float.h \
+  /usr/include/string.h \
+  /usr/include/strings.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdbool.h \
+  /usr/include/curses.h \
+  /usr/include/ncurses_dll.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdint.h \
+  /usr/include/stdint.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/stdint-uintn.h \
   /usr/include/stdio.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdarg.h \
   /usr/include/bits/types/__fpos_t.h \
   /usr/include/bits/types/__mbstate_t.h \
   /usr/include/bits/types/__fpos64_t.h \
@@ -78,8 +83,13 @@ deps_scripts/basic/fixdep := \
   /usr/include/bits/types/struct_FILE.h \
   /usr/include/bits/stdio_lim.h \
   /usr/include/bits/stdio.h \
-  /usr/include/ctype.h \
+  /usr/include/wchar.h \
+  /usr/include/bits/types/wint_t.h \
+  /usr/include/bits/types/mbstate_t.h \
+  /usr/include/bits/wctype-wchar.h \
+  /usr/include/unctrl.h \
+  /usr/include/curses.h \
 
-scripts/basic/fixdep: $(deps_scripts/basic/fixdep)
+scripts/kconfig/lxdialog/yesno.o: $(deps_scripts/kconfig/lxdialog/yesno.o)
 
-$(deps_scripts/basic/fixdep):
+$(deps_scripts/kconfig/lxdialog/yesno.o):

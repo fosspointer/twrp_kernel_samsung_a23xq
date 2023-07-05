@@ -1,11 +1,10 @@
-cmd_scripts/kconfig/confdata.o := gcc -Wp,-MD,scripts/kconfig/.confdata.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89       -c -o scripts/kconfig/confdata.o scripts/kconfig/confdata.c
+cmd_scripts/kconfig/mconf.o := gcc -Wp,-MD,scripts/kconfig/.mconf.o.d -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -std=gnu89      -D_DEFAULT_SOURCE -D_XOPEN_SOURCE=600 -c -o scripts/kconfig/mconf.o scripts/kconfig/mconf.c
 
-source_scripts/kconfig/confdata.o := scripts/kconfig/confdata.c
+source_scripts/kconfig/mconf.o := scripts/kconfig/mconf.c
 
-deps_scripts/kconfig/confdata.o := \
-    $(wildcard include/config/foo.h) \
+deps_scripts/kconfig/mconf.o := \
   /usr/include/stdc-predef.h \
-  /usr/include/sys/mman.h \
+  /usr/include/ctype.h \
   /usr/include/features.h \
   /usr/include/features-time64.h \
   /usr/include/bits/wordsize.h \
@@ -17,20 +16,8 @@ deps_scripts/kconfig/confdata.o := \
   /usr/include/bits/types.h \
   /usr/include/bits/typesizes.h \
   /usr/include/bits/time64.h \
-  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stddef.h \
-  /usr/include/bits/mman.h \
-  /usr/include/bits/mman-map-flags-generic.h \
-  /usr/include/bits/mman-linux.h \
-  /usr/include/bits/mman-shared.h \
-  /usr/include/bits/mman_ext.h \
-  /usr/include/sys/stat.h \
-  /usr/include/bits/types/struct_timespec.h \
   /usr/include/bits/endian.h \
   /usr/include/bits/endianness.h \
-  /usr/include/bits/types/time_t.h \
-  /usr/include/bits/stat.h \
-  /usr/include/bits/struct_stat.h \
-  /usr/include/ctype.h \
   /usr/include/bits/types/locale_t.h \
   /usr/include/bits/types/__locale_t.h \
   /usr/include/errno.h \
@@ -42,6 +29,10 @@ deps_scripts/kconfig/confdata.o := \
   /usr/include/fcntl.h \
   /usr/include/bits/fcntl.h \
   /usr/include/bits/fcntl-linux.h \
+  /usr/include/bits/types/struct_timespec.h \
+  /usr/include/bits/types/time_t.h \
+  /usr/include/bits/stat.h \
+  /usr/include/bits/struct_stat.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/limits.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/syslimits.h \
   /usr/include/limits.h \
@@ -52,21 +43,15 @@ deps_scripts/kconfig/confdata.o := \
   /usr/include/bits/pthread_stack_min-dynamic.h \
   /usr/include/bits/pthread_stack_min.h \
   /usr/include/bits/posix2_lim.h \
+  /usr/include/bits/xopen_lim.h \
+  /usr/include/bits/uio_lim.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdarg.h \
-  /usr/include/stdio.h \
-  /usr/include/bits/types/__fpos_t.h \
-  /usr/include/bits/types/__mbstate_t.h \
-  /usr/include/bits/types/__fpos64_t.h \
-  /usr/include/bits/types/__FILE.h \
-  /usr/include/bits/types/FILE.h \
-  /usr/include/bits/types/struct_FILE.h \
-  /usr/include/bits/stdio_lim.h \
-  /usr/include/bits/floatn.h \
-  /usr/include/bits/floatn-common.h \
-  /usr/include/bits/stdio.h \
   /usr/include/stdlib.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stddef.h \
   /usr/include/bits/waitflags.h \
   /usr/include/bits/waitstatus.h \
+  /usr/include/bits/floatn.h \
+  /usr/include/bits/floatn-common.h \
   /usr/include/sys/types.h \
   /usr/include/bits/types/clock_t.h \
   /usr/include/bits/types/clockid_t.h \
@@ -91,10 +76,27 @@ deps_scripts/kconfig/confdata.o := \
   /usr/include/bits/stdlib-float.h \
   /usr/include/string.h \
   /usr/include/strings.h \
-  /usr/include/time.h \
-  /usr/include/bits/time.h \
-  /usr/include/bits/types/struct_tm.h \
-  /usr/include/bits/types/struct_itimerspec.h \
+  /usr/include/signal.h \
+  /usr/include/bits/signum-generic.h \
+  /usr/include/bits/signum-arch.h \
+  /usr/include/bits/types/sig_atomic_t.h \
+  /usr/include/bits/types/siginfo_t.h \
+  /usr/include/bits/types/__sigval_t.h \
+  /usr/include/bits/siginfo-arch.h \
+  /usr/include/bits/siginfo-consts.h \
+  /usr/include/bits/types/sigval_t.h \
+  /usr/include/bits/types/sigevent_t.h \
+  /usr/include/bits/sigevent-consts.h \
+  /usr/include/bits/sigaction.h \
+  /usr/include/bits/sigcontext.h \
+  /usr/include/bits/types/stack_t.h \
+  /usr/include/sys/ucontext.h \
+  /usr/include/bits/sigstack.h \
+  /usr/include/bits/sigstksz.h \
+  /usr/include/bits/ss_flags.h \
+  /usr/include/bits/types/struct_sigstack.h \
+  /usr/include/bits/sigthread.h \
+  /usr/include/bits/signal_ext.h \
   /usr/include/unistd.h \
   /usr/include/bits/posix_opt.h \
   /usr/include/bits/environments.h \
@@ -106,10 +108,32 @@ deps_scripts/kconfig/confdata.o := \
     $(wildcard include/config/prefix.h) \
   scripts/kconfig/expr.h \
   /usr/include/assert.h \
+  /usr/include/stdio.h \
+  /usr/include/bits/types/__fpos_t.h \
+  /usr/include/bits/types/__mbstate_t.h \
+  /usr/include/bits/types/__fpos64_t.h \
+  /usr/include/bits/types/__FILE.h \
+  /usr/include/bits/types/FILE.h \
+  /usr/include/bits/types/struct_FILE.h \
+  /usr/include/bits/stdio_lim.h \
+  /usr/include/bits/stdio.h \
   scripts/kconfig/list.h \
   /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdbool.h \
   scripts/kconfig/lkc_proto.h \
+  scripts/kconfig/lxdialog/dialog.h \
+  /usr/include/curses.h \
+  /usr/include/ncurses_dll.h \
+  /usr/lib/gcc/x86_64-pc-linux-gnu/13.1.1/include/stdint.h \
+  /usr/include/stdint.h \
+  /usr/include/bits/wchar.h \
+  /usr/include/bits/stdint-uintn.h \
+  /usr/include/wchar.h \
+  /usr/include/bits/types/wint_t.h \
+  /usr/include/bits/types/mbstate_t.h \
+  /usr/include/bits/wctype-wchar.h \
+  /usr/include/unctrl.h \
+  /usr/include/curses.h \
 
-scripts/kconfig/confdata.o: $(deps_scripts/kconfig/confdata.o)
+scripts/kconfig/mconf.o: $(deps_scripts/kconfig/mconf.o)
 
-$(deps_scripts/kconfig/confdata.o):
+$(deps_scripts/kconfig/mconf.o):
