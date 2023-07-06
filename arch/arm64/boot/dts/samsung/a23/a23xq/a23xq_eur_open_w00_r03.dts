@@ -4521,26 +4521,6 @@
 					diff_test_frame = <0x32>;
 					fdm_x_num = <0x2>;
 				};
-
-				novatek-mp-criteria-723C@0 {
-					#address-cells = <0x1>;
-					#size-cells = <0x0>;
-					compatible = "novatek-mp-criteria-723C";
-					open_test_spec = <0xfffffe01 0x1400>;
-					short_test_spec = <0x2710 0x36b8>;
-					diff_test_frame = <0x32>;
-					fdm_x_num = <0x2>;
-				};
-
-				novatek-mp-criteria-7242@0 {
-					#address-cells = <0x1>;
-					#size-cells = <0x0>;
-					compatible = "novatek-mp-criteria-7242";
-					open_test_spec = <0xfffffe01 0x1400>;
-					short_test_spec = <0x2710 0x36b8>;
-					diff_test_frame = <0x32>;
-					fdm_x_num = <0x2>;
-				};
 			};
 		};
 	};

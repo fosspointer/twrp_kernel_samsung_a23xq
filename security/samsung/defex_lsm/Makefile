@@ -10,11 +10,6 @@ LP_ENABLE=true
 UMH_RESTRICTION_ENABLE=true
 TRUSTED_MAP_ENABLE=false
 
-ifneq ($(wildcard $(srctree)/include/crypto/internal/rsa.h),)
-    $(warning [DEFEX] INTEGRITY_ENABLE)
-    INTEGRITY_ENABLE=true
-endif
-
 # caches to enable
 CACHES_ENABLE=true
 

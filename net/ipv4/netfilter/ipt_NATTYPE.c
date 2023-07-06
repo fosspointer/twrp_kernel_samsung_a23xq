@@ -31,9 +31,9 @@ struct ipt_nattype {
 	unsigned long timeout_value;
 	unsigned int nattype_cookie;
 	unsigned short proto;		/* Protocol: TCP or UDP */
-	struct nf_nat_range2 range;	/* LAN side source information */
+	struct nf_nat_range range;	/* LAN side source information */
 	unsigned short nat_port;	/* Routed NAT port */
-	unsigned int dest_addr;	/* Original egress packets dst addr */
+	unsigned int dest_addr;	/* Original egress packets destination addr */
 	unsigned short dest_port;/* Original egress packets destination port */
 };
 
@@ -68,11 +68,9 @@ static void nattype_free(struct ipt_nattype *nte)
 /* netfilter NATTYPE nattype_refresh_timer()
  * Refresh the timer for this object.
  */
-bool nattype_refresh_timer_impl(unsigned long nat_type,
-				unsigned long timeout_value)
+bool nattype_refresh_timer(unsigned long nat_type, unsigned long timeout_value)
 {
 	struct ipt_nattype *nte = (struct ipt_nattype *)nat_type;
-
 	if (!nte)
 		return false;
 	spin_lock_bh(&nattype_lock);

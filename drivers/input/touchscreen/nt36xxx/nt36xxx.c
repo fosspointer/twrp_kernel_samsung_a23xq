@@ -28,6 +28,8 @@
 #include <linux/of_irq.h>
 #include <dt-bindings/interrupt-controller/arm-gic.h>
 
+static uint8_t bTouchIsAwake = 0;
+
 #if defined(CONFIG_DRM_PANEL)
 #include <drm/drm_panel.h>
 #elif defined(CONFIG_FB)
@@ -126,8 +128,6 @@ const uint16_t gesture_key_array[] = {
 	KEY_POWER,  //GESTURE_SLIDE_RIGHT
 };
 #endif
-
-static uint8_t bTouchIsAwake = 0;
 
 #ifdef CONFIG_NOVATEK_TRUSTED_TOUCH
 
@@ -3073,7 +3073,7 @@ static void nvt_ts_shutdown(struct i2c_client *client)
  * return:
  *     Executive outcomes. 0---succeed.
  *******************************************************/
-static int32_t nvt_ts_suspend(struct device *dev)
+int32_t nvt_ts_suspend(struct device *dev)
 {
 	uint8_t buf[4] = {0};
 #if MT_PROTOCOL_B

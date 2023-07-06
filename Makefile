@@ -19,6 +19,20 @@ export KERNEL_SUPPORTS_NESTED_COMPOSITES := y
 PHONY := _all
 _all:
 
+# Do not use make's built-in rules and variables
+# (this increases performance and avoids hard-to-debug behaviour);
+# Look for make include files relative to root of kernel src
+MAKEFLAGS += -rR --include-dir=$(CURDIR)
+
+# Avoid funny character set dependencies
+unexport LC_ALL
+LC_COLLATE=C
+LC_NUMERIC=C
+export LC_COLLATE LC_NUMERIC
+
+# Avoid interference with shell env settings
+unexport GREP_OPTIONS
+
 # We are using a recursive build, so we need to do a little thinking
 # to get the ordering right.
 #
@@ -36,16 +50,6 @@ _all:
 # prepare rule.
 
 ifneq ($(sub_make_done),1)
-
-# Do not use make's built-in rules and variables
-# (this increases performance and avoids hard-to-debug behaviour)
-MAKEFLAGS += -rR
-
-# Avoid funny character set dependencies
-unexport LC_ALL
-LC_COLLATE=C
-LC_NUMERIC=C
-export LC_COLLATE LC_NUMERIC
 
 # Avoid interference with shell env settings
 unexport GREP_OPTIONS
@@ -361,7 +365,8 @@ include scripts/subarch.include
 # Alternatively CROSS_COMPILE can be set in the environment.
 # Default value for CROSS_COMPILE is not to prefix executables
 # Note: Some architectures assign CROSS_COMPILE in their arch/*/Makefile
-ARCH		?= $(SUBARCH)
+ARCH			?= $(SUBARCH)
+CROSS_COMPILE   ?= $(CONFIG_CROSS_COMPILE:"%"=%)
 
 # Architecture as present in compile.h
 UTS_MACHINE 	:= $(ARCH)
@@ -392,7 +397,9 @@ KCONFIG_CONFIG	?= .config
 export KCONFIG_CONFIG
 
 # SHELL used by kbuild
-CONFIG_SHELL := sh
+CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+	  else if [ -x /bin/bash ]; then echo /bin/bash; \
+	  else echo sh; fi ; fi)
 
 HOST_LFS_CFLAGS := $(shell getconf LFS_CFLAGS 2>/dev/null)
 HOST_LFS_LDFLAGS := $(shell getconf LFS_LDFLAGS 2>/dev/null)
@@ -415,7 +422,7 @@ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
 # Make variables (CC, etc...)
 CPP		= $(CC) -E
 ifneq ($(LLVM),)
-REAL_CC	= clang
+CC	= clang
 LD		= ld.lld
 AR		= llvm-ar
 NM		= llvm-nm
@@ -425,7 +432,7 @@ READELF		= llvm-readelf
 OBJSIZE		= llvm-size
 STRIP		= llvm-strip
 else
-REAL_CC		= $(CROSS_COMPILE)gcc
+CC		= $(CROSS_COMPILE)gcc
 LD		= $(CROSS_COMPILE)ld
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -452,14 +459,6 @@ KLZOP		= lzop
 LZMA		= lzma
 LZ4		= lz4c
 XZ		= xz
-
-ifndef DISABLE_WRAPPER
-# Use the wrapper for the compiler.  This wrapper scans for new
-# warnings and causes the build to stop upon encountering them
-CC		= $(srctree)/scripts/gcc-wrapper.py $(REAL_CC)
-else
-CC		= $(REAL_CC)
-endif
 
 CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 		  -Wbitwise -Wno-return-void -Wno-unknown-attribute $(CF)
@@ -1029,6 +1028,12 @@ ifeq ($(CONFIG_RELR),y)
 LDFLAGS_vmlinux	+= --pack-dyn-relocs=relr --use-android-relr-tags
 endif
 
+ifeq ($(CONFIG_SENSORS_FINGERPRINT), y)
+  ifndef CONFIG_SEC_FACTORY
+    export KBUILD_FP_SENSOR_CFLAGS := -DENABLE_SENSORS_FPRINT_SECURE
+  endif
+endif
+
 # make the checker run with the right architecture
 CHECKFLAGS += --arch=$(ARCH)
 
@@ -1036,7 +1041,7 @@ CHECKFLAGS += --arch=$(ARCH)
 CHECKFLAGS += $(if $(CONFIG_CPU_BIG_ENDIAN),-mbig-endian,-mlittle-endian)
 
 # the checker needs the correct machine size
-CHECKFLAGS += $(if $(CONFIG_64BIT),-m64,-m32)
+# CHECKFLAGS += $(if $(CONFIG_64BIT),-m64,-m32)
 
 # Default kernel image to build when no specific target is given.
 # KBUILD_IMAGE may be overruled on the command line or

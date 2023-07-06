@@ -7380,6 +7380,8 @@ static void selinux_nf_ip_exit(void)
 #endif /* CONFIG_NETFILTER */
 
 #ifdef CONFIG_SECURITY_SELINUX_DISABLE
+static int selinux_disabled;
+
 int selinux_disable(struct selinux_state *state)
 {
 	if (ss_initialized) {// SEC_SELINUX_PORTING_COMMON Change to use RKP

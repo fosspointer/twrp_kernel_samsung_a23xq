@@ -1,0 +1,5 @@
+/vmlinuz
+/System.map
+/Module.markers
+out
+.tmp*/
